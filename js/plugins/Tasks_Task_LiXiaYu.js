@@ -100,5 +100,70 @@ Task.Tasks=[
             Task.manager.setAvaliable(2,false);
             //self.setVariables("avaliable",false);
         }
+    },
+    {
+        id:3,
+        title:"Kill some Bat",
+        description:"Can you help us kill 2 bats?",
+
+        init:function(self){
+            self.setVariables("KillEnemyTotalNumber",2);
+            self.setVariables("KillEnemyNumber",0);
+            self.setVariables("KillEnemyId",1);
+        },
+
+        begin:function(self){
+
+            Task.Module.KillEnemyNumberTask.BMpvFunctions.push(function(){
+                for(var i=0;i<$gameTroop._enemies.length;i++)
+                {
+                    if($gameTroop._enemies[i]._enemyId===self.getVariables("KillEnemyId"))
+                    {
+                        self.setVariables("KillEnemyNumber",self.getVariables("KillEnemyNumber")+1);
+                    }
+                }
+            });
+
+        },
+
+        ifFinish:function(self){
+            //如果杀掉的敌人数大于要求的敌人总数
+            if(self.getVariables("KillEnemyNumber")>=self.getVariables("KillEnemyTotalNumber"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        },
+
+        end:function(self){
+            //给队伍第一个人加经验
+            $gameActors.actor(1).changeExp($gameActors.actor(1).currentExp() + 500,false);
+            //将任务设置为不可接受，虽然默认设置过，但为了保险，再手动来一遍
+            Task.manager.setAvaliable(2,false);
+            //self.setVariables("avaliable",false);
+        }
     }
 ]
+
+//任务模板，预定义好一些任务及其功能
+Task.Module={};
+
+//杀敌人 类任务
+Task.Module.KillEnemyNumberTask.KillEnemyNumberTask={};
+//函数数组，此种函数会在战斗胜利后执行
+Task.Module.KillEnemyNumberTask.BMpvFunctions=[];
+
+Task.Module.KillEnemyNumberTask.BMpv=BattleManager.processVictory;
+BattleManager.processVictory=function(){
+    var result=Task.Module.KillEnemyNumberTask.BMpv.call(this);
+
+    for(var i=0;i<Task.Module.KillEnemyNumberTask.BMpvFunctions.length;i++)
+    {
+        Task.Module.KillEnemyNumberTask.BMpvFunctions[i]();
+    }
+
+    return result;
+}

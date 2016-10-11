@@ -128,7 +128,7 @@ Task.Manager.Window.prototype.update = function (){
     if (this.needUpdate())
     {
         this.contents.clear();
-        Task.manager.CheckIfFinish();
+        //Task.manager.CheckIfFinish();
         this.show();
     };
 };
@@ -153,6 +153,39 @@ Task.Manager.Window.prototype.needUpdate = function (){
     return true;
 };
 
+//监视者，监视任务的变化，对Scene_Base的update做了改变
+Task.Manager.Monitor={};
+/*//继承Window的写法，弃用  
+    Task.Manager.Monitor=function(){
+        this.initialize.apply(this, arguments);
+    };
+    Task.Manager.Monitor.prototype=Object.create(Window.prototype);
+    Task.Manager.Monitor.prototype.initialize = function(x, y, width, height) {
+        Window.prototype.initialize.call(this);
+        //this.loadWindowskin();
+        //this.move(x, y, width, height);
+        //this.updatePadding();
+        //this.updateBackOpacity();
+        //this.updateTone();
+        //this.createContents();
+        //this._opening = false;
+        //this._closing = false;
+        //this._dimmerSprite = null;
+    };
+*/
+Task.Manager.Monitor.events=require("events");
+Task.Manager.Monitor.eventEmitter = new Task.Manager.Monitor.events.EventEmitter();
+Task.Manager.Monitor.eventEmitter.on("Update",function(){
+    Task.manager.CheckIfFinish();
+});
+Task.Manager.Monitor.update=Scene_Base.prototype.update;
+Scene_Base.prototype.update=function(){
+    var result=Task.Manager.Monitor.update.call(this);
+
+    Task.Manager.Monitor.eventEmitter.emit("Update");
+
+    return result; 
+}
 
 ////    //存档 读档
     Task.Manager.SaveGame = DataManager.saveGame;
@@ -200,7 +233,6 @@ Task.Manager.Window.prototype.needUpdate = function (){
         {
             objtasks= JSON.parse(str);  
         }
-
         var tasks=Task.manager.TasksList();
         for(var i=1;i<tasks.length;i++)
         {

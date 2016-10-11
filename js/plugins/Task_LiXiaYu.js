@@ -96,4 +96,17 @@ Task.Task=function(){
 
 }
 //Task.Task.prototype.constructor=Task.Task;
+/*
+var ArrayContains=function(array,obj){
+    var i=array.length;
+    while(i--){
+        if(array[i]===obj)
+        {
+            return true;
+        }
+    }
+    return false
+}
 
+alert(ArrayContains([1,2,3],2));
+*/
