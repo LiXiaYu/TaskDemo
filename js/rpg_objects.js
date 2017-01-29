@@ -8880,6 +8880,7 @@ Game_Interpreter.prototype.setWaitMode = function(waitMode) {
 };
 
 Game_Interpreter.prototype.wait = function(duration) {
+    console.log(duration);
     this._waitCount = duration;
 };
 

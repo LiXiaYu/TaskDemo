@@ -1,0 +1,7 @@
+[
+    null,
+    {
+        "a":"a",
+        "note":"<DataXMLReader author='LiXiaYu' version='0.1.0'><Plugin name='Task' author='LiXiaYu' version='0.1.0'><Add><Task type='KillEnemyNumber'><taskTitle>杀敌测试</taskTitle><taskDescription>测试一下，来自DataXMLReader</taskDescription><enemyId>3</enemyId><enemyTotalNumber>10</enemyTotalNumber></Task></Add></Plugin></DataXMLReader>"
+    }
+]

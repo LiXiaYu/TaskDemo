@@ -72,7 +72,7 @@ Task.Manager=function(){
             tasks[id].End();
         }
     }
-}
+};
 //Task.Manager.prototype.constructor=Task.Manager;
 
 
@@ -173,19 +173,17 @@ Task.Manager.Monitor={};
         //this._dimmerSprite = null;
     };
 */
-Task.Manager.Monitor.events=require("events");
-Task.Manager.Monitor.eventEmitter = new Task.Manager.Monitor.events.EventEmitter();
-Task.Manager.Monitor.eventEmitter.on("Update",function(){
-    Task.manager.CheckIfFinish();
-});
 Task.Manager.Monitor.update=Scene_Base.prototype.update;
 Scene_Base.prototype.update=function(){
     var result=Task.Manager.Monitor.update.call(this);
 
-    Task.Manager.Monitor.eventEmitter.emit("Update");
+    if(Task.manager!==null)
+    {
+        Task.manager.CheckIfFinish();
+    }
 
     return result; 
-}
+};
 
 ////    //存档 读档
     Task.Manager.SaveGame = DataManager.saveGame;
@@ -208,8 +206,7 @@ Scene_Base.prototype.update=function(){
         return result;
     };
 
-    Task.Manager.onSave=function()
-    {
+    Task.Manager.onSave=function(){
         var tasks=Task.manager.TasksList();
         var objtasks={};
         for(var i=1;i<tasks.length;i++)
@@ -224,9 +221,8 @@ Scene_Base.prototype.update=function(){
         var str = JSON.stringify(objtasks);
         console.log(str);
         $gameVariables.setValue(20,str);
-    }
-    Task.Manager.onLoad=function()
-    {
+    };
+    Task.Manager.onLoad=function(){
         var str=$gameVariables.value(20);
         var objtasks;
         if(str!=""&&str!=null)
@@ -243,7 +239,7 @@ Scene_Base.prototype.update=function(){
             }
         }
         //deepCompareCopy(objtasks,Task.manager.TasksList());
-    }
+    };
 ////
 ////    //深拷贝
 var deepCompareCopy= function(source,target) { 
@@ -285,7 +281,7 @@ var deepCompareCopy= function(source,target) {
         } 
     }
     
-}
+};
 ////
 Task.manager=new Task.Manager();
 Task.manager.loadTaskFile();

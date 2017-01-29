@@ -145,14 +145,35 @@ Task.Tasks=[
             Task.manager.setAvaliable(2,false);
             //self.setVariables("avaliable",false);
         }
-    }
-]
+    },
+{
+        id:4,
+        title:"test Task",
+        description:"It's a test Task, made by TaskBuilder.",
+
+        init:function(self){
+
+        },
+        
+        begin:function(self){
+
+        },
+
+        ifFinish:function(self){
+            return false;
+        },
+
+        end:function(self){
+
+        }
+    }//tip for taskbuilder add
+];
 
 //任务模板，预定义好一些任务及其功能
 Task.Module={};
 
 //杀敌人 类任务
-Task.Module.KillEnemyNumberTask.KillEnemyNumberTask={};
+Task.Module.KillEnemyNumberTask={};
 //函数数组，此种函数会在战斗胜利后执行
 Task.Module.KillEnemyNumberTask.BMpvFunctions=[];
 
@@ -166,4 +187,4 @@ BattleManager.processVictory=function(){
     }
 
     return result;
-}
+};
