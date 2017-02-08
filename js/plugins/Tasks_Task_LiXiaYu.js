@@ -13,7 +13,10 @@
 //
 //下面的是功能函数，当然你也可以不写在这里，而在事件里设置具体实现，但我一般只把对话写在事件里面。
 //  init：用于初始化，在系统加载的时候运行
-//
+//  recive: 在接受任务前判断是否可以接受任务，会改变avaliable变量
+//      返回值
+//          true:可以接受
+//          false:不可以接受
 //  begin：在接受任务时运行的函数
 //
 //  ifFinish：判断任务是否可以完成，即是否可以提交
@@ -27,14 +30,15 @@
 //  使用了setVariables()函数设置变量，这里面的变量都会储存起来（实际上是对象的属性）
 //  使用了getVariables()读取变量
 //
-//默认设置了两个变量"state"和"avaliable"
+//默认设置了三个变量"state" "avaliable" "times"
 //  "state":"Unrecive","Ongoing","Submitable","Finished"
 //      用于判断任务所处的状态：未接受，进行中，可提交，已完成
 //  "avaliable":true,false
 //      用于判断任务十分可用，即是否可以接受
-//
+//  "times": Number 0,1,2,3,4,...
+//      用于记录任务被接受的次数
 //  在接受任务后应当将avaliable设置为false
-//  在任务结束后如果将avaliable仍旧设置为false，则任务将不可重复
+//  要使任务不可重复接受，应当在recive中添加关于times的判断
 //=============================================================================
 
 Task.Tasks=[
@@ -48,6 +52,10 @@ Task.Tasks=[
 
         },
         
+        recive:function(self){
+            return self.getVariables("avaliable");
+        },
+
         begin:function(self){
 
         },
@@ -71,6 +79,18 @@ Task.Tasks=[
             //Task.manager.setAvaliable(2,true);
             //self.setVariables("state","Unrecive");
             //self.setVariables("avaliable",true);
+        },
+
+        recive:function(self){
+            //只能接受一次 
+            if(self.getVariables("times")<1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         },
 
         begin:function(self){
@@ -110,6 +130,18 @@ Task.Tasks=[
             self.setVariables("KillEnemyTotalNumber",2);
             self.setVariables("KillEnemyNumber",0);
             self.setVariables("KillEnemyId",1);
+        },
+
+        recive:function(self){
+            //只能接受一次 
+            if(self.getVariables("times")<1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         },
 
         begin:function(self){
@@ -155,6 +187,10 @@ Task.Tasks=[
 
         },
         
+        recive:function(self){
+            return self.getVariables("avaliable");
+        },
+
         begin:function(self){
 
         },

@@ -18,6 +18,7 @@ Task.Manager=function(){
             tasks.push(rtask);
             tasks[tasks.length-1].setVariables("state","Unrecive");
             tasks[tasks.length-1].setVariables("avaliable",true);
+            tasks[tasks.length-1].setVariables("times",0);
             tasks[tasks.length-1].Init();
         }
     }
@@ -57,10 +58,15 @@ Task.Manager=function(){
             }
         }
     }
+    this.ifCanRecive=function(id){
+        tasks[id].setAvaliable(tasks[id].Recive());
+    }
     this.Recive=function(id){
+        this.ifCanRecive(id);
         if(this.getState(id)==="Unrecive"&&this.getAvaliable(id)===true)
         {
             tasks[id].setVariables("avaliable",false);
+            tasks[id].setVariables("times",tasks[id].getVariables("times")+1);
             tasks[id].Begin();
             this.setState(id,"Ongoing");
         }

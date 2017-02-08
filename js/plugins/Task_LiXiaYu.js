@@ -14,6 +14,10 @@ Task.Task=function(){
     var init=function(self){
 
     };
+    
+    var recive=function(self){
+        return self.getVariables("avaliable");
+    };
 
     var begin=function(self){
 
@@ -31,6 +35,7 @@ Task.Task=function(){
         description=taskData.description;
         
         init=taskData.init;
+        recive=taskData.recive;
         begin=taskData.begin;
         ifFinish=taskData.ifFinish;
         end=taskData.end;
@@ -39,6 +44,9 @@ Task.Task=function(){
 
     this.Init=function(){
         return init(this);
+    }
+    this.Recive=function(){
+        return recive(this);
     }
     this.Begin=function(){
         return begin(this);
@@ -92,6 +100,12 @@ Task.Task=function(){
     }
     this.setAvaliable=function(avaliable){
         return this.setVariables("avaliable",avaliable);
+    }
+    this.getTimes=function(){
+        return this.getVariables("times");
+    }
+    this.setTimes=function(times){
+        return this.setVariables("times",times);
     }
 
 }
